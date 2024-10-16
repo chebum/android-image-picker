@@ -86,7 +86,7 @@ class DefaultImageFileLoader(private val context: Context) : ImageFileLoader {
         @SuppressLint("InlinedApi")
         private fun queryData(limit: Int? = null): Cursor? {
             val useNewApi = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-            val sourceUri = if (limit != null && useNewApi) {
+            val sourceUri = if (limit != null && !useNewApi) {
                 getSourceUri().buildUpon()
                     .appendQueryParameter(QUERY_LIMIT, limit.toString())
                     .build()
@@ -128,9 +128,7 @@ class DefaultImageFileLoader(private val context: Context) : ImageFileLoader {
                 return context.contentResolver.query(sourceUri, projection, args, null)
             }
 
-            val sortOrder = "${MediaStore.Images.Media.DATE_MODIFIED} DESC".let {
-                if (limit != null) "$it LIMIT $limit" else it
-            }
+            val sortOrder = "${MediaStore.Images.Media.DATE_MODIFIED} DESC"
 
             return context.contentResolver.query(
                 sourceUri, projection,
