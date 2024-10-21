@@ -201,7 +201,7 @@ class DefaultImageFileLoader(private val context: Context) : ImageFileLoader {
             cursor.close()
 
             val folders = folderMap.values.toList()
-            listener.onImageLoaded(result, folders)
+            listener.onImageLoaded(result, folders.sortedBy { it.folderName })
         }
 
         override fun run() {
