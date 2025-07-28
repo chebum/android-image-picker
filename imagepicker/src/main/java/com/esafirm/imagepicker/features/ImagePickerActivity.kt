@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowInsets
+import androidx.activity.addCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
@@ -107,6 +108,14 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
                 insets
             }
         }
+
+        onBackPressedDispatcher.addCallback(this) {
+            if (this@ImagePickerActivity::imagePickerFragment.isInitialized) {
+                if (!imagePickerFragment.handleBack()) {
+                    super.onBackPressed()
+                }
+            }
+        }
     }
 
     /**
@@ -138,7 +147,7 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == android.R.id.home) {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
             return true
         }
         if (id == R.id.menu_done) {
@@ -154,16 +163,6 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onBackPressed() {
-        if (this::imagePickerFragment.isInitialized) {
-            if (!imagePickerFragment.handleBack()) {
-                super.onBackPressed()
-            }
-        } else {
-            super.onBackPressed()
-        }
     }
 
     private fun setupView(config: ImagePickerConfig) {
