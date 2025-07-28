@@ -101,7 +101,7 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
             window.decorView.setOnApplyWindowInsetsListener { view, insets ->
                 view.setBackgroundColor(this.getColorPrimary())
                 // Adjust padding to avoid overlap
-                if (isActionBarEnabled()) {
+                if (!isActionBarEnabled()) {
                     val systemBarsInsets = insets.getInsets(WindowInsets.Type.systemBars())
                     view.setPadding(0, systemBarsInsets.top, 0, systemBarsInsets.bottom)
                 }
