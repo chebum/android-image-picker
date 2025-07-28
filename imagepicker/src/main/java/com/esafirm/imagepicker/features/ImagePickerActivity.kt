@@ -4,9 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowInsets
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
@@ -19,6 +21,8 @@ import com.esafirm.imagepicker.helper.ImagePickerUtils
 import com.esafirm.imagepicker.helper.IpCrasher
 import com.esafirm.imagepicker.helper.LocaleManager
 import com.esafirm.imagepicker.helper.ViewUtils
+import com.esafirm.imagepicker.helper.getColorPrimary
+import com.esafirm.imagepicker.helper.isActionBarEnabled
 import com.esafirm.imagepicker.model.Image
 
 class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener {
@@ -90,6 +94,18 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
             val ft = supportFragmentManager.beginTransaction()
             ft.replace(R.id.ef_imagepicker_fragment_placeholder, imagePickerFragment)
             ft.commit()
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) { // Android 15+
+            window.decorView.setOnApplyWindowInsetsListener { view, insets ->
+                view.setBackgroundColor(this.getColorPrimary())
+                // Adjust padding to avoid overlap
+                if (isActionBarEnabled()) {
+                    val systemBarsInsets = insets.getInsets(WindowInsets.Type.systemBars())
+                    view.setPadding(0, systemBarsInsets.top, 0, systemBarsInsets.bottom)
+                }
+                insets
+            }
         }
     }
 
