@@ -50,30 +50,14 @@ android {
     namespace 'com.esafirm.imagepicker'
 }
 
-tasks.register("sourcesJar", Jar) {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(android.sourceSets.main.java.srcDirs)
-    archiveClassifier.set("sources")
-}
-
 afterEvaluate {
     publishing {
         publications {
             maven(MavenPublication) {
                 from components.release
-//                artifact sourcesJar
             }
         }
     }
-
-    // Make sure sourcesJar runs when needed
-    tasks.named("publishToMavenLocal") {
-        dependsOn tasks.named("sourcesJar")
-    }
-}
-
-artifacts {
-    archives tasks.sourcesJar
 }
 
 dependencies {
