@@ -50,9 +50,8 @@ android {
 }
 
 tasks.register("sourcesJar", Jar) {
-    from(android.sourceSets.main.kotlin.srcDirs)
-    from(android.sourceSets.main.java.srcDirs)
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from(android.sourceSets.main.java.srcDirs)
     archiveClassifier.set("sources")
 }
 
@@ -67,8 +66,4 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.1'
 
     implementation "androidx.core:core-ktx:1.16.0"
-
-    testImplementation platform("org.junit:junit-bom:5.13.4")
-    testImplementation "org.junit.jupiter:junit-jupiter"
-    testImplementation 'com.natpryce:hamkrest:1.8.0.1'
 }
