@@ -59,26 +59,21 @@ tasks.register("sourcesJar", Jar) {
 afterEvaluate {
     publishing {
         publications {
-            release(MavenPublication) {
+            maven(MavenPublication) {
                 from components.release
-                // Optional: add sources jar
-                artifact sourcesJar
-
-                // Optional: customize artifact coordinates
-                groupId = 'com.github.chebum' // Replace with your GitHub username
-                artifactId = 'android-image-picker'
-                version = 'sdk-36-5' // or use project.version
+//                artifact sourcesJar
             }
         }
+    }
+
+    // Make sure sourcesJar runs when needed
+    tasks.named("publishToMavenLocal") {
+        dependsOn tasks.named("sourcesJar")
     }
 }
 
 artifacts {
     archives tasks.sourcesJar
-}
-
-tasks.named("publishToMavenLocal") {
-    dependsOn tasks.named("sourcesJar")
 }
 
 dependencies {
