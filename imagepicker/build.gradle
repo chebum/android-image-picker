@@ -56,6 +56,23 @@ tasks.register("sourcesJar", Jar) {
     archiveClassifier.set("sources")
 }
 
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                // Optional: add sources jar
+                artifact sourcesJar
+
+                // Optional: customize artifact coordinates
+                groupId = 'com.github.chebum' // Replace with your GitHub username
+                artifactId = 'android-image-picker'
+                version = 'sdk-36-5' // or use project.version
+            }
+        }
+    }
+}
+
 artifacts {
     archives tasks.sourcesJar
 }
