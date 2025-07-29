@@ -110,8 +110,14 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
         }
 
         onBackPressedDispatcher.addCallback(this) {
-            if (this@ImagePickerActivity::imagePickerFragment.isInitialized) {
-                imagePickerFragment.handleBack()
+            if (this@ImagePickerActivity::imagePickerFragment.isInitialized && imagePickerFragment.handleBack()) {
+                if (!imagePickerFragment.handleBack()) {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            } else {
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
             }
         }
     }
